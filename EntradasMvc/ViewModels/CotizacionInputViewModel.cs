@@ -1,0 +1,35 @@
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace EntradasMvc.ViewModels;
+
+public class CotizacionInputViewModel
+{
+    [Required(ErrorMessage = "Ingrese el nombre del cliente.")]
+    [StringLength(60, MinimumLength = 3,
+        ErrorMessage = "El nombre debe tener entre 3 y 60 caracteres.")]
+    [Display(Name = "Nombre del cliente")]
+    public string Cliente { get; set; } = string.Empty;
+
+    [Range(1, 10,
+        ErrorMessage = "La cantidad debe estar entre 1 y 10.")]
+    [Display(Name = "Cantidad de entradas")]
+    public int Cantidad { get; set; } = 1;
+
+    // Ejercicio individual (paso 21)
+    [Required(ErrorMessage = "Seleccione el tipo de entrada.")]
+    [RegularExpression("^(General|VIP)$",
+        ErrorMessage = "El tipo de entrada debe ser General o VIP.")]
+    [Display(Name = "Tipo de entrada")]
+    public string TipoEntrada { get; set; } = string.Empty;
+
+    // Opciones que la vista usa para dibujar el <select>.
+    // [BindNever]: estas opciones no se reciben desde el formulario.
+    [BindNever]
+    public IEnumerable<SelectListItem> TiposEntrada { get; } = new List<SelectListItem>
+    {
+        new("General", "General"),
+        new("VIP", "VIP")
+    };
+}
